@@ -5,10 +5,10 @@ from collections import deque
 
 def solution_new(n: int) -> int:
     """deque를 사용해 개미 수열을 구한 방법
-    1. 두개의 큐를 사용, 하나는 개미 수열을 한 숫자씩 담고있고, 
+    1. 두개의 큐를 사용, 하나는 개미 수열을 한 숫자씩 담고있고,
         다른 하나는 수열의 수가 이어져 반복되는 횟수를 담고 있다.
     2. stage 변수를 사용해 개미 수열이 갱신되는 횟수를 기록한다.
-    3. 수열이 빌때까지, 왼쪽의 값을 pop하면서, 
+    3. 수열이 빌때까지, 왼쪽의 값을 pop하면서,
         - 해당 수가 count 큐의 마지막 값과 동일하면, count 큐의 마지막 값의 횟수를 +1
         - 아니면 count 큐에 새롭게 값을 넣는다.
     4. 수열이 비게 되면, 개미 수열을 갱신한다고 가정하고,
@@ -22,25 +22,26 @@ def solution_new(n: int) -> int:
     Returns:
         int: n번째 항 개미 수열의 가운데 두자리 수
     """
-    sequence = deque() # 수열의 숫자들을 순서대로 담고 있음
-    sequence.append(1) 
-    count = deque() # 수열의 이웃한 같은 수를 구하는 큐
+    sequence = deque()  # 수열의 숫자들을 순서대로 담고 있음
+    sequence.append(1)
+    count = deque()  # 수열의 이웃한 같은 수를 구하는 큐
     stage = 1
     while True:
-        if stage == n: break # n번째 항까지만 반복 후 멈춤
+        if stage == n:
+            break  # n번째 항까지만 반복 후 멈춤
         num = sequence.popleft()
-        if count and count[-1][0] == num: # 이전에 본 수가 지금 수랑 같으면 개수를 업데이트
+        if count and count[-1][0] == num:  # 이전에 본 수가 지금 수랑 같으면 개수를 업데이트
             target, cnt = count.pop()
-            count.append([target, cnt+1])
+            count.append([target, cnt + 1])
         else:
-            count.append([num, 1]) # 새로운 수
-        if not sequence: # 해당 항의 모든 수를 보았음
-            while count: # 이웃한 수의 같은 수를 구한 큐로 새로운 수열을 만듬
+            count.append([num, 1])  # 새로운 수
+        if not sequence:  # 해당 항의 모든 수를 보았음
+            while count:  # 이웃한 수의 같은 수를 구한 큐로 새로운 수열을 만듬
                 target, cnt = count.popleft()
                 sequence.append(cnt)
                 sequence.append(target)
-            stage += 1 # 다음 항으로 넘어감
-    mid = len(sequence)//2-1
+            stage += 1  # 다음 항으로 넘어감
+    mid = len(sequence) // 2 - 1
     return int(f"{sequence[mid]}{sequence[mid+1]}")
 
 
@@ -76,8 +77,9 @@ def solution_old(n: int) -> int:
         num = result
         result = ""
         cnt_loop += 1
-    mid = len(num)//2-1
-    return int(num[mid:mid+2])
+    mid = len(num) // 2 - 1
+    return int(num[mid : mid + 2])
+
 
 def main(n: int) -> int:
     """
@@ -94,13 +96,14 @@ def main(n: int) -> int:
         int: n번째 항 개미 수열의 가운데 두자리 수
     """
     start = time.time()
-    if n == 1: # base
+    if n == 1:  # base
         answer = 1
     else:
         answer = solution_new(n)
         # answer = solution_old(n)
     print(f"실행시간: {time.time() - start:.4f}")
     return answer
+
 
 if __name__ == "__main__":
     n = int(input("개미 수열의 몇번째 항을 계산할지 입력해주세요: "))

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float
 from app.db.session import Base
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 
 class FoodComposition(Base):
@@ -44,9 +44,9 @@ class FoodCompositionBase(BaseModel):
     trans_fat: Optional[float] = Field(None, description="트랜스지방(g)(1회제공량당)")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
-    @validator('research_year')
+    @field_validator('research_year')
     def validate_research_year(cls, value):
         if int(value) is not None and (int(value) < 1900 or int(value) > 2100):
             raise ValueError('research_year must be between 1900 and 2100')

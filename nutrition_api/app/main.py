@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import logging.config
-from app.models import food_composition
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import food_comp
 
 
@@ -26,11 +26,24 @@ app = FastAPI(
     swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"}
 )
 
+origins = [
+    "http://localhost:8000",
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(food_comp.router, prefix="/api/v1/food_comp", tags=["food_composition"])
 
 
 # This path is for health check or test
-@app.get("/", summary="Health Check")
+@app.get("/health", summary="Health Check")
 async def root():
     return {"CONNECT"}

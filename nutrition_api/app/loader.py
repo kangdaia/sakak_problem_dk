@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import create_engine, Column, Integer, String, Float, MetaData, Table
+from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # CSV 파일 경로

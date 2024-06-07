@@ -18,10 +18,10 @@ logger = logging.getLogger("sakak")
     summary="""전체 식품영양성분 목록에서 식품이름 혹은 연도(YYYY), 지역/제조사, 식품코드로 식품데이터를 찾는다."""
 )
 async def search_food_composition_items(
-    food_name: Annotated[str | None, Query(max_length=50, example="닭갈비")] = None,
-    research_year: Annotated[str | None, Query(regex=r'\d{4}', strict=True, example="2024")] = None,
-    maker_name: Annotated[str | None, Query(max_length=50, example="전국(대표)")] = None,
-    food_cd: Annotated[str | None, Query(max_length=7, example="D000000")] = None,
+    food_name: Annotated[str | None, Query(max_length=50, examples=["닭갈비"])] = None,
+    research_year: Annotated[str | None, Query(pattern=r'\d{4}', strict=True, examples=["2024"])] = None,
+    maker_name: Annotated[str | None, Query(max_length=50, examples=["전국(대표)"])] = None,
+    food_cd: Annotated[str | None, Query(max_length=7, examples=["D000000"])] = None,
     skip: int=0, 
     limit: int=100,
     db: Session = Depends(get_db),

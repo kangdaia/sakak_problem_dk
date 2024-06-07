@@ -11,17 +11,9 @@ logger.info("START Application")
 # Tags for representative endpoints
 tags = [
     {
-        "name": "users",
-        "description": "Operations with users.",
-    },
-    {
-        "name": "items",
-        "description": "Manage items.",
-        "externalDocs": {
-            "description": "Items external docs - This is only for an example",
-            "url": "https://anywhere.your.external.docs.is",
-        },
-    },
+        "name": "food_comp",
+        "description": "manage the food composition information for various food",
+    }
 ]
 
 

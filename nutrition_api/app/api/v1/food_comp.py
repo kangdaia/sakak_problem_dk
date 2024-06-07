@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Path
 from app.models.food_composition import FoodComposition, FoodCompositionBase, FoodCompositionUpdate, FoodCompositionCreate
 from app.repositories import food_comp_crud
 from sqlalchemy.orm import Session
@@ -64,7 +64,7 @@ async def create_food_composition(
 )
 async def update_food_composition(
     food_composition_in: FoodCompositionUpdate,
-    food_cd: Annotated[str, Query(max_length=7, example="D000000")],
+    food_cd: Annotated[str, Path(max_length=7, examples=["D000000"])],
     db: Session = Depends(get_db)
 ):
     logger.info("update food composition items by food_cd")
@@ -81,7 +81,7 @@ async def update_food_composition(
     summary="식품코드로 해당 영양정보를 삭제한다."
 )
 async def delete_food_compostion(
-    food_cd: Annotated[str, Query(max_length=7, example="D000000")], 
+    food_cd: Annotated[str, Path(max_length=7, examples=["D000000"])], 
     db: Session = Depends(get_db)
 ):
     logger.info("delete food composition items by food_cd")

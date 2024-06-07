@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query, Path
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Path, Body
 from app.models.food_composition import FoodComposition, FoodCompositionBase, FoodCompositionUpdate, FoodCompositionCreate
 from app.repositories import food_comp_crud
 from sqlalchemy.orm import Session
@@ -45,16 +45,15 @@ async def search_food_composition_items(
     summary="새로운 식품영양정보를 추가한다."
 )
 async def create_food_composition(
-    food_composition_new=FoodCompositionCreate,
-    db: Session = Depends(get_db)
+    food_composition_new: FoodCompositionCreate = Body(...), db: Session = Depends(get_db)
 ):
     logger.info("create a food composition item")
     target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_composition_new.food_cd)
     if target:
         raise HTTPException(status_code=400, detail="이미 존재하는 식품코드입니다.")
-    food_composition = FoodComposition(**food_composition_new.dict())
-    created_food_composition = food_comp_crud.create(db, new_obj=food_composition)
-    return created_food_composition
+    created_food_composition = await food_comp_crud.create_food_composition(db, food_composition_new)
+    response = FoodCompositionBase.model_validate(created_food_composition)
+    return response
 
 
 @router.put(
@@ -63,10 +62,10 @@ async def create_food_composition(
     summary="식품코드로 해당 영양정보를 업데이트한다."
 )
 async def update_food_composition(
-    food_composition_in: FoodCompositionUpdate,
     food_cd: Annotated[str, Path(max_length=7, examples=["D000000"])],
+    food_composition_in: FoodCompositionUpdate = Body(...),
     db: Session = Depends(get_db)
-):
+):  
     logger.info("update food composition items by food_cd")
     target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_cd)
     if not target:
@@ -88,5 +87,5 @@ async def delete_food_compostion(
     target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_cd)
     if not target:
         raise HTTPException(status_code=404, detail="존재하지 않는 식품 영양정보입니다.")
-    food_comp_crud.delete_food_composition_by_food_cd(db, food_cd=food_cd)
+    food_comp_crud.delete_food_composition_by_food_cd(db, food_composition=target)
     return None

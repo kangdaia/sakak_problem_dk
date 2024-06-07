@@ -9,7 +9,7 @@ logger = logging.getLogger("sakak")
 
 
 def get_food_compositions_by_food_cd(db: Session, food_cd: str):
-    return db.query(FoodComposition).filter(FoodComposition.food_cd == food_cd).one()
+    return db.query(FoodComposition).filter(FoodComposition.food_cd == food_cd).first()
 
 
 async def get_food_compositions_by_condition(
@@ -34,11 +34,12 @@ async def get_food_compositions_by_condition(
     return result if result else []
 
 
-async def create_food_composition(db: Session, new_obj: FoodComposition):
-    db.add(new_obj)
+async def create_food_composition(db: Session, new_obj: FoodCompositionCreate):
+    db_food_composition = FoodComposition(**new_obj.model_dump())
+    db.add(db_food_composition)
     db.commit()
-    db.refresh(new_obj)
-    return new_obj
+    db.refresh(db_food_composition)
+    return db_food_composition
 
 
 async def update_food_composition(db: Session, fc_obj: FoodComposition, update_obj: dict):

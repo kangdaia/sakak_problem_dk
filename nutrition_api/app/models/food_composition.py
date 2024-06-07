@@ -54,8 +54,7 @@ class FoodCompositionBase(BaseModel):
 
 
 class FoodCompositionCreate(FoodCompositionBase):
-    pass
-
+    food_cd: str
 
 class FoodCompositionUpdate(FoodCompositionBase):
     pass

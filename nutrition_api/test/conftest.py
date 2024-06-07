@@ -40,7 +40,7 @@ def test_client(db_session):
 
 
 @pytest.fixture()
-def test_create_food_composition():
+def food_comp_test_obj():
     return {
         "id": "D000001-1234",
         "food_cd": "D000001",
@@ -62,7 +62,10 @@ def test_create_food_composition():
     }
 
 @pytest.fixture()
-def test_update_food_composition():
+def food_comp_test_obj_update():
     return {
+        "id": "D000001-1234",
         "research_year": 2022,
+        "calorie": 300.0,
+        "food_name": "업데이트된 닭갈비"
     }

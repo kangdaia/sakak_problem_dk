@@ -21,7 +21,7 @@ async def search_food_composition_items(
     food_name: Annotated[str | None, Query(max_length=50, examples=["닭갈비"])] = None,
     research_year: Annotated[str | None, Query(pattern=r'\d{4}', strict=True, examples=["2024"])] = None,
     maker_name: Annotated[str | None, Query(max_length=50, examples=["전국(대표)"])] = None,
-    food_cd: Annotated[str | None, Query(max_length=7, examples=["D000000"])] = None,
+    food_code: Annotated[str | None, Query(max_length=7, examples=["D000000"])] = None,
     skip: int=0, 
     limit: int=100,
     db: Session = Depends(get_db),
@@ -32,7 +32,7 @@ async def search_food_composition_items(
         food_name=food_name,
         research_year=research_year,
         maker_name=maker_name,
-        food_cd=food_cd,
+        food_cd=food_code,
         skip=skip,
         limit=limit
     )
@@ -57,17 +57,17 @@ async def create_food_composition(
 
 
 @router.put(
-    "/{food_cd}",
+    "/{food_code}",
     status_code=status.HTTP_200_OK,
     summary="식품코드로 해당 영양정보를 업데이트한다."
 )
 async def update_food_composition(
-    food_cd: Annotated[str, Path(max_length=7, examples=["D000000"])],
+    food_code: Annotated[str, Path(max_length=7, examples=["D000000"])],
     food_composition_in: FoodCompositionUpdate = Body(...),
     db: Session = Depends(get_db)
 ):  
     logger.info("update food composition items by food_cd")
-    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_cd)
+    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_code)
     if not target:
         raise HTTPException(status_code=404, detail="존재하지 않는 식품 영양정보입니다.")
     update_data = food_composition_in.dict(exclude_unset=True)
@@ -75,16 +75,16 @@ async def update_food_composition(
 
 
 @router.delete(
-    "/{food_cd}",
+    "/{food_code}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="식품코드로 해당 영양정보를 삭제한다."
 )
 async def delete_food_compostion(
-    food_cd: Annotated[str, Path(max_length=7, examples=["D000000"])], 
+    food_code: Annotated[str, Path(max_length=7, examples=["D000000"])], 
     db: Session = Depends(get_db)
 ):
     logger.info("delete food composition items by food_cd")
-    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_cd)
+    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_code)
     if not target:
         raise HTTPException(status_code=404, detail="존재하지 않는 식품 영양정보입니다.")
     food_comp_crud.delete_food_composition_by_food_cd(db, food_composition=target)

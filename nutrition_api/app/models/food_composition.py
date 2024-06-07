@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float
-from db.session import Base
-from pydantic import BaseModel
+from app.db.session import Base
+from pydantic import BaseModel, Field, validator
 from typing import Optional
 
 class FoodComposition(Base):
@@ -26,23 +26,36 @@ class FoodComposition(Base):
 
 class FoodCompositionBase(BaseModel):
     id: str
-    food_cd: Optional[str]
-    group_name: Optional[str]
-    food_name: Optional[str]
-    research_year: Optional[int]
-    maker_name: Optional[str]
-    ref_name: Optional[str]
-    serving_size: Optional[float]
-    calorie: Optional[float]
-    carbohydrate: Optional[float]
-    protein: Optional[float]
-    province: Optional[float]
-    sugars: Optional[float]
-    salt: Optional[float]
-    cholesterol: Optional[float]
-    saturated_fatty_acids: Optional[float]
-    trans_fat: Optional[float]
+    food_cd: Optional[str] = Field(None, description="식품코드")
+    group_name: Optional[str] = Field(None, description="식품군")
+    food_name: Optional[str] = Field(None, description="식품이름")
+    research_year: Optional[int] = Field(None, description="조사년도")
+    maker_name: Optional[str] = Field(None, description="지역/제조사")
+    ref_name: Optional[str] = Field(None, description="자료출처")
+    serving_size: Optional[float] = Field(None, description="1회 제공량")
+    calorie: Optional[float] = Field(None, description="열량(kcal)(1회제공량당)")
+    carbohydrate: Optional[float] = Field(None, description="탄수화물(g)(1회제공량당)")
+    protein: Optional[float] = Field(None, description="단백질(g)(1회제공량당)")
+    province: Optional[float] = Field(None, description="지방(g)(1회제공량당)")
+    sugars: Optional[float] = Field(None, description="총당류(g)(1회제공량당)")
+    salt: Optional[float] = Field(None, description="나트륨(g)(1회제공량당)")
+    cholesterol: Optional[float] = Field(None, description="콜레스테롤(g)(1회제공량당)")
+    saturated_fatty_acids: Optional[float] = Field(None, description="포화지방산(g)(1회제공량당)")
+    trans_fat: Optional[float] = Field(None, description="트랜스지방(g)(1회제공량당)")
+
+    class Config:
+        orm_mode = True
+
+    @validator('research_year')
+    def validate_research_year(cls, value):
+        if int(value) is not None and (int(value) < 1900 or int(value) > 2100):
+            raise ValueError('research_year must be between 1900 and 2100')
+        return value
 
 
 class FoodCompositionCreate(FoodCompositionBase):
+    pass
+
+
+class FoodCompositionUpdate(FoodCompositionBase):
     pass

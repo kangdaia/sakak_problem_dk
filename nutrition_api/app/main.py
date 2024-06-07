@@ -11,7 +11,7 @@ logger.info("START Application")
 # Tags for representative endpoints
 tags = [
     {
-        "name": "food_comp",
+        "name": "food_composition",
         "description": "manage the food composition information for various food",
     }
 ]
@@ -23,6 +23,7 @@ app = FastAPI(
     description="This is an api for sakak coding test.",
     version="0.0.1",
     openapi_tags=tags,
+    swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"}
 )
 
 
@@ -30,6 +31,6 @@ app.include_router(food_comp.router, prefix="/api/v1/food_comp", tags=["food_com
 
 
 # This path is for health check or test
-@app.get("/")
+@app.get("/", summary="Health Check")
 async def root():
     return {"CONNECT"}

@@ -24,6 +24,9 @@
 - `cd /nutrition_api/app/test`
 - `pytest`
 
+### OpenAPI documentation
+- [localhost:8000/docs](http://localhost:8000/docs) 로 접근해 확인할 수 있다
+
 ### 데이터 로드 방식
 
 - excel 파일을 csv로 변환해서 /nutrition_api/app/db에 저장했다.

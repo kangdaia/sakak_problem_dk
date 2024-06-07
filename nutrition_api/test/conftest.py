@@ -6,7 +6,7 @@ from app.main import app
 from app.db.session import Base, get_db
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test/test.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base.metadata.create_all(bind=engine)
@@ -43,7 +43,7 @@ def test_client(db_session):
 def food_comp_test_obj():
     return {
         "id": "D000001-1234",
-        "food_cd": "D000001",
+        "food_code": "D000001",
         "group_name": "음식",
         "food_name": "닭갈비",
         "research_year": 2019,

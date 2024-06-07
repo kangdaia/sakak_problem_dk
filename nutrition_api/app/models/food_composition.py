@@ -6,7 +6,7 @@ from typing import Optional
 class FoodComposition(Base):
     __tablename__ = 'food_compositions'
     id = Column(String, primary_key=True)
-    food_cd = Column(String)
+    food_code = Column(String)
     group_name = Column(String)
     food_name = Column(String)
     research_year = Column(Integer)
@@ -26,7 +26,7 @@ class FoodComposition(Base):
 
 class FoodCompositionBase(BaseModel):
     id: str
-    food_cd: Optional[str] = Field(None, description="식품코드")
+    food_code: Optional[str] = Field(None, description="식품코드")
     group_name: Optional[str] = Field(None, description="식품군")
     food_name: Optional[str] = Field(None, description="식품이름")
     research_year: Optional[int] = Field(None, description="조사년도")
@@ -54,7 +54,7 @@ class FoodCompositionBase(BaseModel):
 
 
 class FoodCompositionCreate(FoodCompositionBase):
-    food_cd: str
+    food_code: str
 
 class FoodCompositionUpdate(FoodCompositionBase):
     pass

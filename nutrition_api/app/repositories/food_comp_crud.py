@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 logger = logging.getLogger("sakak")
 
 
-def get_food_compositions_by_food_cd(db: Session, food_cd: str):
-    return db.query(FoodComposition).filter(FoodComposition.food_cd == food_cd).first()
+def get_food_compositions_by_food_cd(db: Session, food_code: str):
+    return db.query(FoodComposition).filter(FoodComposition.food_code == food_code).first()
 
 
 async def get_food_compositions_by_condition(
@@ -17,7 +17,7 @@ async def get_food_compositions_by_condition(
     food_name: Optional[str],
     research_year: Optional[str],
     maker_name: Optional[str],
-    food_cd: Optional[str],
+    food_code: Optional[str],
     skip: int = 0,
     limit: int = 100,
 ):
@@ -28,8 +28,8 @@ async def get_food_compositions_by_condition(
         query = query.filter(FoodComposition.research_year == int(research_year))
     if maker_name:
         query = query.filter(FoodComposition.maker_name == maker_name)
-    if food_cd:
-        query = query.filter(FoodComposition.food_cd == food_cd)
+    if food_code:
+        query = query.filter(FoodComposition.food_code == food_code)
     result = query.offset(skip).limit(limit).all()
     return result if result else []
 

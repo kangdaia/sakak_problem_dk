@@ -17,7 +17,7 @@ Session = sessionmaker(bind=engine, future=True)
 class FoodComposition(Base):
     __tablename__ = "food_compositions"
     id = Column(String, primary_key=True)
-    food_cd = Column(String)
+    food_code = Column(String)
     group_name = Column(String)
     food_name = Column(String)
     research_year = Column(Integer)
@@ -45,7 +45,7 @@ df = pd.read_csv(csv_file_path)
 df = df.rename(
     columns={
         "SAMPLE_ID": "id",
-        "식품코드": "food_cd",
+        "식품코드": "food_code",
         "DB군": "group_name",
         "식품명": "food_name",
         "연도": "research_year",
@@ -84,7 +84,7 @@ with Session() as session:
     for index, row in df.iterrows():
         food_composition = FoodComposition(
             id=row["id"],
-            food_cd=row["food_cd"],
+            food_code=row["food_code"],
             group_name=row["group_name"],
             food_name=row["food_name"],
             research_year=row["research_year"]

@@ -38,34 +38,34 @@
 
 ```(text)
 |  Dockerfile
-│  entrypoint.py
-│  Pipfile
+│  entrypoint.py // 어플리케이션 uvicorn 실행 파일
+│  Pipfile // python 가상환경 구성 정보 (pipenv)
 │  Pipfile.lock
 │  README.md
-├─app
-│  │  loader.py
+├─app //메인폴더
+│  │  loader.py // db 구성 파일
 │  │  main.py
 │  │  sample.db
 │  │  __init__.py
 │  ├─api
 │  │  │  __init__.py
 │  │  ├─v1
-│  │  │  │  food_comp.py
+│  │  │  │  food_comp.py // endpoint router 파일
 │  │  │  │  __init__.py
 │  ├─db
-│  │  │  sample_data.csv
+│  │  │  sample_data.csv // 주어진 excel 파일을 csv로 변환
 │  │  │  session.py
 │  │  │  __init__.py
 │  ├─models
-│  │  │  food_composition.py
+│  │  │  food_composition.py // 모델과 schema
 │  │  │  __init__.py
 │  ├─repositories
-│  │  │  food_comp_crud.py
+│  │  │  food_comp_crud.py // 레포지토리
 │  │  │  __init__.py
 └─test
     │  conftest.py
     │  test.db
-    │  test_food_comp_api.py
+    │  test_food_comp_api.py // 메인 테스트코드
     │  __init__.py
 ```
 

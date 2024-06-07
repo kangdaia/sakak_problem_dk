@@ -32,7 +32,7 @@ async def search_food_composition_items(
         food_name=food_name,
         research_year=research_year,
         maker_name=maker_name,
-        food_cd=food_code,
+        food_code=food_code,
         skip=skip,
         limit=limit
     )
@@ -48,7 +48,7 @@ async def create_food_composition(
     food_composition_new: FoodCompositionCreate = Body(...), db: Session = Depends(get_db)
 ):
     logger.info("create a food composition item")
-    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_composition_new.food_cd)
+    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_code=food_composition_new.food_code)
     if target:
         raise HTTPException(status_code=400, detail="이미 존재하는 식품코드입니다.")
     created_food_composition = await food_comp_crud.create_food_composition(db, food_composition_new)
@@ -66,8 +66,8 @@ async def update_food_composition(
     food_composition_in: FoodCompositionUpdate = Body(...),
     db: Session = Depends(get_db)
 ):  
-    logger.info("update food composition items by food_cd")
-    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_code)
+    logger.info("update food composition items by food_code")
+    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_code=food_code)
     if not target:
         raise HTTPException(status_code=404, detail="존재하지 않는 식품 영양정보입니다.")
     update_data = food_composition_in.dict(exclude_unset=True)
@@ -83,8 +83,8 @@ async def delete_food_compostion(
     food_code: Annotated[str, Path(max_length=7, examples=["D000000"])], 
     db: Session = Depends(get_db)
 ):
-    logger.info("delete food composition items by food_cd")
-    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_cd=food_code)
+    logger.info("delete food composition items by food_code")
+    target = food_comp_crud.get_food_compositions_by_food_cd(db, food_code=food_code)
     if not target:
         raise HTTPException(status_code=404, detail="존재하지 않는 식품 영양정보입니다.")
     food_comp_crud.delete_food_composition_by_food_cd(db, food_composition=target)
